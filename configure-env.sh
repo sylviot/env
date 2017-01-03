@@ -1,7 +1,11 @@
 #! /bin/bash
 
 install_arch () {
-  print "Installing ARCH LINUX - sylviot"
+  print "> > > Preinstalling ARCH LINUX < < < <"
+
+  preinstall_arch
+
+  print "> > > Installing ARCH LINUX < < < <"
 
   PACKAGES="zsh git yajl vlc wget htop unrar yaourt "
   PACKAGES+="chromium firefox opera "
@@ -10,10 +14,13 @@ install_arch () {
     print "\tInstalling packages..."
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi 
+
+  configure_docker
+  configure_vim
+  configure_zsh
 }
 
 preinstall_arch() {
-  print "Preinstalling ARCH LINUX"
 
   if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
     print "> > Configuring yaourt server..."
@@ -24,6 +31,7 @@ preinstall_arch() {
 postinstall_arch() {
   print "Postinstalling ARCH LINUX"
 
+  print "Pulling docker container..."
   #docker pull php
   #docker pull postgres
   #docker pull redis
@@ -39,14 +47,14 @@ configure_docker() {
 configure_vim() {
   print "Configuring vim..."
 
-  if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
+  if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     print "Configuring vundle..."
     git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
   fi
   print "Install vundle plugins..."
   vim +VundleInstall +qall
 
-  if [ -z "`ls $HOME/share/fonts/ | grep Powerline`" ]; then
+  if [ -z "`ls $HOME/.local/share/fonts/ | grep Powerline`" ]; then
     print "Installing powerline fonts..."
     git clone https://github.com/powerline/fonts.git /tmp/powerline-fonts &&
     cd /tmp/powerline-fonts &&
@@ -55,7 +63,11 @@ configure_vim() {
 }
 
 configure_zsh() {
-  sudo chsh -s $(which zsh)
+  if [ ! -z "`echo $SHELL | grep zsh`" ]; then
+    print "Configuring zsh..."
+    sudo chsh -s $(which zsh)
+  fi
+
   if [ ! -d "$HOME/.oh-my-zsh" ]; then
     print "Configuring oh-my-zsh..."
     git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
