@@ -1,7 +1,7 @@
 #! /bin/bash
 
 install_arch () {
-  print "%RED%Installing ARCH LINUX%NC% - sylviot"
+  print "Installing ARCH LINUX - sylviot"
 
   PACKAGES="zsh git yajl vlc wget htop unrar yaourt "
   PACKAGES+="chromium firefox opera "
@@ -14,7 +14,11 @@ install_arch () {
 
 preinstall_arch() {
   print "Preinstalling ARCH LINUX"
-  sudo bash -c "echo -e '[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
+
+  if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
+    print "> > Configuring yaourt server..."
+    sudo bash -c "echo -e '[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
+  fi
 }
 
 postinstall_arch() {
@@ -32,7 +36,12 @@ configure_docker() {
 
 configure_vim() {
   print "Configuring vim..."
-
+  if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
+    print "Configuring vundle..."
+    git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
+  fi
+  print "Install vundle plugins..."
+  vim +VundleInstall +qall
 }
 
 configure_powerline() {
@@ -45,10 +54,6 @@ configure_powerline() {
   fi
 }
 
-configure_yaourt() {
-  print "Configuring yaourt..."
-}
-
 configure_zsh() {
   sudo chsh -s $(which zsh)
 }
@@ -56,7 +61,7 @@ configure_zsh() {
 print () {
   RED='\033[0;31m'
   NC='\033[0m'
-  echo -e "> $1" | sed -e "s/%\w*%//g"
+  echo -e "$RED> $1$NC" | sed -e "s/%\w*%//g"
   #echo "> $1" | sed  "s/%(\w)%/\1/g"
 }
 
@@ -64,5 +69,6 @@ print () {
 #configure_docker
 #configure_zsh
 #configure_powerline
-#preinstall_arch
+#configure_vim
+preinstall_arch
 install_arch
