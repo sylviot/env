@@ -22,10 +22,12 @@ preinstall_arch() {
 }
 
 postinstall_arch() {
-  docker pull php
-  docker pull postgres
-  docker pull redis
-  docker pull elixir
+  print "Postinstalling ARCH LINUX"
+
+  #docker pull php
+  #docker pull postgres
+  #docker pull redis
+  #docker pull elixir
 }
 
 configure_docker() {
@@ -36,16 +38,14 @@ configure_docker() {
 
 configure_vim() {
   print "Configuring vim..."
+
   if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
     print "Configuring vundle..."
     git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
   fi
   print "Install vundle plugins..."
   vim +VundleInstall +qall
-}
 
-configure_powerline() {
-  print "Configuring powerline..."
   if [ -z "`ls $HOME/share/fonts/ | grep Powerline`" ]; then
     print "Installing powerline fonts..."
     git clone https://github.com/powerline/fonts.git /tmp/powerline-fonts &&
@@ -56,6 +56,10 @@ configure_powerline() {
 
 configure_zsh() {
   sudo chsh -s $(which zsh)
+  if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    print "Configuring oh-my-zsh..."
+    git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
+  fi
 }
 
 print () {
@@ -65,10 +69,8 @@ print () {
   #echo "> $1" | sed  "s/%(\w)%/\1/g"
 }
 
-#configure_yaourt
-#configure_docker
-#configure_zsh
-#configure_powerline
-#configure_vim
-preinstall_arch
-install_arch
+if [[ "$1" == "postinstall" ]]; then
+  postinstall_arch
+else
+  install_arch
+fi
