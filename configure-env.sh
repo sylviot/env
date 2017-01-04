@@ -36,9 +36,18 @@ postinstall_arch() {
 
   print "Pulling docker images..."
   docker pull php
+  docker pull ambientum/php:7.0-nginx
+  docker pull phpunit/phpunit
   docker pull postgres
   docker pull redis
   docker pull elixir
+  docker pull node
+
+  docker run --name web-cache -d redis
+  docker run --name web-db -d postgres
+  sudo bash -c "echo -e '#! /bin/bash \n docker run --name web --link web-cache --link web-db --ip 172.17.0.100 -v $PWD:/var/www/app ambientum/php:7.0-nginx' >> /usr/local/bin/docker-laravel"
+  sudo chmod +x "/usr/local/bin/docker-laravel"
+  #sudo chmod +x "/usr/local/bin/docker-phpunit"  
 }
 
 configure_docker() {
