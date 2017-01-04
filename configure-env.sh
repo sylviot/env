@@ -7,13 +7,17 @@ install_arch () {
 
   print "> > > Installing ARCH LINUX < < < <"
 
-  PACKAGES="zsh git yajl vlc wget htop unrar yaourt "
+  PACKAGES="zsh git vim docker vlc clementine wget htop unrar yajl yaourt "
+  # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin " 
+  # test it...
   PACKAGES+="chromium firefox opera "
 
   if [ -n "`(pacman -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling packages..."
     sudo pacman -Sq --needed --noconfirm $PACKAGES
-  fi 
+  fi
+
+  #yaourt installs
 
   configure_docker
   configure_vim
@@ -21,7 +25,6 @@ install_arch () {
 }
 
 preinstall_arch() {
-
   if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
     print "> > Configuring yaourt server..."
     sudo bash -c "echo -e '[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
@@ -29,13 +32,13 @@ preinstall_arch() {
 }
 
 postinstall_arch() {
-  print "Postinstalling ARCH LINUX"
+  print "> > > Postinstalling ARCH LINUX < < < <"
 
-  print "Pulling docker container..."
-  #docker pull php
-  #docker pull postgres
-  #docker pull redis
-  #docker pull elixir
+  print "Pulling docker images..."
+  docker pull php
+  docker pull postgres
+  docker pull redis
+  docker pull elixir
 }
 
 configure_docker() {
@@ -51,6 +54,7 @@ configure_vim() {
     print "Configuring vundle..."
     git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
   fi
+
   print "Install vundle plugins..."
   vim +VundleInstall +qall
 
