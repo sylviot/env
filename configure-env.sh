@@ -1,16 +1,18 @@
 #! /bin/bash
 
 install_arch () {
-  print "> > > Preinstalling ARCH LINUX < < < <"
+  print "> > > Preinstalling $BLUE ARCH LINUX $DEFAULT < < < <"
 
   preinstall_arch
 
-  print "> > > Installing ARCH LINUX < < < <"
+  print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
   PACKAGES="zsh git vim docker vlc clementine wget htop unrar yajl yaourt "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin " 
   # test it...
   PACKAGES+="chromium firefox opera "
+
+  sudo pacman -Sy
 
   if [ -n "`(pacman -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling packages..."
@@ -19,9 +21,10 @@ install_arch () {
 
   #yaourt installs
 
-  configure_docker
+  configure_desktop
   configure_vim
   configure_zsh
+  configure_docker
 }
 
 preinstall_arch() {
@@ -31,29 +34,34 @@ preinstall_arch() {
   fi
 }
 
-postinstall_arch() {
-  print "> > > Postinstalling ARCH LINUX < < < <"
+configure_desktop() {
+  print "Configuring desktop..."
 
-  print "Pulling docker images..."
-  docker pull php
-  docker pull ambientum/php:7.0-nginx
-  docker pull phpunit/phpunit
-  docker pull postgres
-  docker pull redis
-  docker pull elixir
-  docker pull node
-
-  docker run --name web-cache -d redis
-  docker run --name web-db -d postgres
-  sudo bash -c "echo -e '#! /bin/bash \n docker run --name web --link web-cache --link web-db --ip 172.17.0.100 -v $PWD:/var/www/app ambientum/php:7.0-nginx' >> /usr/local/bin/docker-laravel"
-  sudo chmod +x "/usr/local/bin/docker-laravel"
-  #sudo chmod +x "/usr/local/bin/docker-phpunit"  
+  #download image backgroud
+  #xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-time -s /temp/background.jpg
 }
 
 configure_docker() {
   print "Configuring docker..."
   sudo systemctl enable docker
   sudo usermod -aG docker sylviot
+
+  # confirm pulling
+  
+  print "Pulling docker images..."
+  # docker pull php
+  # docker pull ambientum/php:7.0-nginx
+  # docker pull phpunit/phpunit
+  # docker pull postgres
+  # docker pull redis
+  # docker pull elixir
+  # docker pull node
+
+  # docker run --name web-cache -d redis
+  # docker run --name web-db -d postgres
+  # sudo bash -c "echo -e '#! /bin/bash \n docker run --name web --link web-cache --link web-db --ip 172.17.0.100 -v $PWD:/var/www/app ambientum/php:7.0-nginx' >> /usr/local/bin/docker-laravel"
+  # sudo chmod +x "/usr/local/bin/docker-laravel"
+  # sudo chmod +x "/usr/local/bin/docker-phpunit"  
 }
 
 configure_vim() {
@@ -63,6 +71,8 @@ configure_vim() {
     print "Configuring vundle..."
     git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
   fi
+
+  #download .vimrc
 
   print "Install vundle plugins..."
   vim +VundleInstall +qall
@@ -88,14 +98,15 @@ configure_zsh() {
 }
 
 print () {
-  RED='\033[0;31m'
+  DEFAULT='\033[0;31m'
+  BLUE='\033[0;32m'
   NC='\033[0m'
-  echo -e "$RED> $1$NC" | sed -e "s/%\w*%//g"
-  #echo "> $1" | sed  "s/%(\w)%/\1/g"
+  echo -e "$DEFAULT > $1$NC" | sed -e "s/%\w*%//g"
 }
 
-if [[ "$1" == "postinstall" ]]; then
-  postinstall_arch
-else
-  install_arch
-fi
+install_arch
+
+# if [[ "$1" == "postinstall" ]]; then
+#   postinstall_arch
+# else
+# fi
