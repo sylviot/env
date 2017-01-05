@@ -27,7 +27,7 @@ install_arch () {
 preinstall_arch() {
   if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
     print "> > Configuring yaourt server..."
-    sudo bash -c "echo -e '[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
+    sudo bash -c "echo -e '\n\n[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
   fi
 }
 
