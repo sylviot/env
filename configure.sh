@@ -77,7 +77,6 @@ configure_vim() {
     git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
   fi
 
-  #download .vimrc
   if [ ! -s "$HOME/.vimrc" ]; then
     print "Configuring .vimrc..."
     git clone https://github.com/sylviot/dot.git /tmp/dot
@@ -115,8 +114,3 @@ print () {
 }
 
 install_arch
-
-# if [[ "$1" == "postinstall" ]]; then
-#   postinstall_arch
-# else
-# fi
