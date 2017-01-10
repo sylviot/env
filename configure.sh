@@ -15,11 +15,16 @@ install_arch () {
   sudo pacman -Sy
 
   if [ -n "`(pacman -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
-    print "\tInstalling packages..."
+    print "\tInstalling pacman packages..."
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
+  
+  PACKAGES="chrome "
 
   #yaourt installs
+  if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
+    print "\tInstalling yaourt packages..."
+  fi
 
   configure_desktop
   configure_vim
@@ -73,8 +78,9 @@ configure_vim() {
   fi
 
   #download .vimrc
-  if [ ! -d "$HOME/.vimrc" ]; then
-    git clone https://github.com/sylviot/dot.git /tmp/dot &&
+  if [ ! -s "$HOME/.vimrc" ]; then
+    print "Configuring .vimrc..."
+    git clone https://github.com/sylviot/dot.git /tmp/dot
     mv /tmp/dot/.vimrc $HOME/.vimrc
   fi
 
