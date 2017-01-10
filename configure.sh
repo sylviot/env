@@ -73,6 +73,10 @@ configure_vim() {
   fi
 
   #download .vimrc
+  if [ ! -d "$HOME/.vimrc" ]; then
+    git clone https://github.com/sylviot/dot.git /tmp/dot &&
+    mv /tmp/dot/.vimrc $HOME/.vimrc
+  fi
 
   print "Install vundle plugins..."
   vim +VundleInstall +qall
