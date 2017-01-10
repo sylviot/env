@@ -19,11 +19,12 @@ install_arch () {
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
   
-  PACKAGES="chrome "
+  PACKAGES="google-chrome "
 
   #yaourt installs
   if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling yaourt packages..."
+    yaourt -S --needed --noconfirm $PACKAGES
   fi
 
   configure_desktop
