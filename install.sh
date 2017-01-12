@@ -11,7 +11,7 @@ mount /dev/sda3 /mnt
 
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
 
-vim -c "g/\[.*\.br.*]/m0" -c "wq" /etc/pacman.d/mirrorlist
+vim -c "g/.*\.br.*/m0" -c "wq" /etc/pacman.d/mirrorlist
 
 pacstrap -i /mnt base base-devel
 
