@@ -4,38 +4,38 @@ fdisk -l
 
 mkfs.ext4 -c /dev/sda3
 
-mkswap --check /dev/sdaS
-swapon /dev/sdaS
+mkswap --check /dev/sda2
+swapon /dev/sda2
 
 mount /dev/sda3 /mnt
-#mount /dev/sdaB /mnt/boot
 
-#descomentando o mirrorlist do Brazil
+mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
 
-pacstrap -i /mnt base-devel
+vim -c "g/\[.*\.br.*]/m0" -c "wq" /etc/pacman.d/mirrorlist
+
+pacstrap -i /mnt base base-devel
 
 genfstab -U /mnt > /mnt/etc/fstab
 
-arch-chroot /mnt /bin/bash
+arch-chroot /mnt /bin/bash <<EOF
+echo "sylviot" > /etc/hostname
 
-echo "en_US.UTF-8" > /etc/locale.gen
-echo "LANG=en_US.UTF-8" > /etc/locale.conf
+locale >/etc/locale.conf
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 export LANG=en_US.UTF-8
+locale-gen
 
 ln -s /usr/share/zoneinfo/America/Bahia > /etc/localtime
 hwclock --systohc --utc
 
-pacman -Sy
-pacman -S --noconfirm grub os-prober
+pacman -Sy --noconfirm grub os-prober
 
 grub-install --recheck --target=i386-pc /dev/sda
-grub-mkconfig -o /boot/grub/grub.cfg
+grub-mk n  nconfig -o /boot/grub/grub.cfg
 
-echo sylviot > /etc/hostname
-# passwd
+passwd
 
-exit
+EOF
 
 umount -R /mnt
-echo "END"
-#reboot
+reboot
