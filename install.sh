@@ -9,7 +9,7 @@ swapon /dev/sda2
 
 mount /dev/sda3 /mnt
 
-mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
 
 vim -c "g/.*\.br.*/m0" -c "wq" /etc/pacman.d/mirrorlist
 
