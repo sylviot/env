@@ -13,7 +13,7 @@ mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
 curl -s "https://www.archlinux.org/mirrorlist/?country=BR&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
 sed -i 's/\#Server/Server/g' /etc/pacman.d/mirrorlist
 
-pacstrap -i /mnt base base-devel
+pacstrap /mnt base base-devel
 
 genfstab -U /mnt > /mnt/etc/fstab
 
