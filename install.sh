@@ -9,9 +9,9 @@ swapon /dev/sda2
 
 mount /dev/sda3 /mnt
 
-cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
-
-vim -c "g/.*\.br.*/m0" -c "wq" /etc/pacman.d/mirrorlist
+mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
+curl -s "https://www.archlinux.org/mirrorlist/?country=BR&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
+sed 's/\#Server/Server/g' /etc/pacman.d/mirrorlist
 
 pacstrap -i /mnt base base-devel
 
