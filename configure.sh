@@ -19,7 +19,7 @@ install_arch () {
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
   
-  PACKAGES="google-chrome "
+  PACKAGES="google-chrome lightdm-webkit2-greeter archey3 "
 
   #yaourt installs
   if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
@@ -53,21 +53,25 @@ configure_docker() {
   sudo usermod -aG docker sylviot
 
   # confirm pulling
-  
-  print "Pulling docker images..."
-  # docker pull php
-  # docker pull ambientum/php:7.0-nginx
-  # docker pull phpunit/phpunit
-  # docker pull postgres
-  # docker pull redis
-  # docker pull elixir
-  # docker pull node
+  read -p "Download docker images? [y/n] " -r
+  if [[ "$REPLY" = "y" ]]; then
 
-  # docker run --name web-cache -d redis
-  # docker run --name web-db -d postgres
-  # sudo bash -c "echo -e '#! /bin/bash \n docker run --name web --link web-cache --link web-db --ip 172.17.0.100 -v $PWD:/var/www/app ambientum/php:7.0-nginx' >> /usr/local/bin/docker-laravel"
-  # sudo chmod +x "/usr/local/bin/docker-laravel"
-  # sudo chmod +x "/usr/local/bin/docker-phpunit"  
+    print "Pulling docker images..."
+    docker pull php
+    docker pull ambientum/php:7.0-nginx
+    docker pull phpunit/phpunit
+    docker pull postgres
+    docker pull redis
+    docker pull elixir
+    docker pull node
+
+    docker run --name web-cache -d redis
+    docker run --name web-db -d postgres
+    # Move to /bin in github
+    #sudo bash -c "echo -e '#! /bin/bash \n docker run --name web --link web-cache --link web-db --ip 172.17.0.100 -v $PWD:/var/www/app ambientum/php:7.0-nginx' >> /usr/local/bin/docker-laravel"
+    #sudo chmod +x "/usr/local/bin/docker-laravel"
+    #sudo chmod +x "/usr/local/bin/docker-phpunit"  
+  fi
 }
 
 configure_vim() {
@@ -85,7 +89,7 @@ configure_vim() {
   fi
 
   print "Install vundle plugins..."
-  vim +VundleInstall +qall
+  vim +VundleInstall +qall &> /dev/null
 
   if [ -z "`ls $HOME/.local/share/fonts/ | grep Powerline`" ]; then
     print "Installing powerline fonts..."
