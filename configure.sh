@@ -59,7 +59,7 @@ configure_docker() {
 
   # confirm pulling
   read -p "Download docker images? [y/n] " -r
-  if [[ "$REPLY" = "y" ]]; then
+  if [[ "$REPLY" == "y" ]]; then
 
     print "Pulling docker images..."
     docker pull php
@@ -83,7 +83,7 @@ configure_vim() {
   print "Configuring vim..."
 
   if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
-    print "Configuring vundle..."
+    print "Configuring Vundle..."
     git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
   fi
 
@@ -93,7 +93,7 @@ configure_vim() {
     mv /tmp/dot/.vimrc $HOME/.vimrc
   fi
 
-  print "Install vundle plugins..."
+  print "Install/Update Vundle plugins..."
   vim +VundleInstall +qall &> /dev/null
 
   if [ -z "`ls $HOME/.local/share/fonts/ | grep Powerline`" ]; then
@@ -118,9 +118,8 @@ configure_zsh() {
 
 print () {
   DEFAULT='\033[0;31m'
-  BLUE='\033[0;32m'
   NC='\033[0m'
-  echo -e "$DEFAULT > $1$NC" | sed -e "s/%\w*%//g"
+  echo -e "$DEFAULT > $1$NC"
 }
 
 install_arch
