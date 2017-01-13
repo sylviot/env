@@ -1,5 +1,12 @@
 #! /bin/bash
 
+preinstall_arch() {
+  if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
+    print "> > Configuring yaourt server..."
+    sudo bash -c "echo -e '\n\n[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
+  fi
+}
+
 install_arch () {
   print "> > > Preinstalling $BLUE ARCH LINUX $DEFAULT < < < <"
 
@@ -7,7 +14,8 @@ install_arch () {
 
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
-  PACKAGES="zsh git vim docker vlc clementine wget htop unrar yajl yaourt "
+  PACKAGES="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm"
+  PACKAGES+="wget htop git vim zsh bash-completion ctags docker vlc clementine unrar yajl yaourt "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin " 
   # test it...
   PACKAGES+="chromium firefox opera "
@@ -33,18 +41,15 @@ install_arch () {
   configure_docker
 }
 
-preinstall_arch() {
-  if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
-    print "> > Configuring yaourt server..."
-    sudo bash -c "echo -e '\n\n[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
-  fi
-}
-
 configure_desktop() {
   print "Configuring desktop..."
 
+  #Configure lightdm.conf
+  sudo sed -i -r 's/^#.(greeter-session=)/\1lightdm-webkit2-greeter/g' /etc/lightdm/lightdm.conf
+
+  systemctl enable lightdm.service
   #download image backgroud
-  #xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-time -s /temp/background.jpg
+  #xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s /temp/background.jpg
 }
 
 configure_docker() {

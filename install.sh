@@ -20,22 +20,31 @@ genfstab -U /mnt > /mnt/etc/fstab
 arch-chroot /mnt /bin/bash <<EOF
 echo "sylviot" > /etc/hostname
 
+useradd -m -G wheel,users -s /bin/bash sylviot
+sed -i -r 's/^#.(%wheel.[^PSWD]*$)/\1/' /etc/sudores
+
 locale >/etc/locale.conf
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 export LANG=en_US.UTF-8
 locale-gen
 
+rm -f /etc/localtime
 ln -s /usr/share/zoneinfo/America/Bahia > /etc/localtime
 hwclock --systohc --utc
+timedatectl set-ntp true
+
+systemctl enable dhcpcd
 
 pacman -Sy --noconfirm grub os-prober
 
 grub-install --recheck --target=i386-pc /dev/sda
-grub-mk n  nconfig -o /boot/grub/grub.cfg
+sed -i -r 's/(^.*_TIMEOUT=)5/\10/' /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
 
 passwd
 
 EOF
 
 umount -R /mnt
-#reboot
+
+reboot
