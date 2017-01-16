@@ -1,0 +1,5 @@
+#! /bin/bash
+
+docker run --link cache --link db --name laravel.$1 -d -v $PWD:/var/www/app web/php
+sensible-browser "$(docker inspect -f '{{ .NetworkSettings.IPAddress}}' laravel.$1):8080"
+docker-info laravel.$1

@@ -15,9 +15,8 @@ install_arch () {
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
   PACKAGES="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm"
-  PACKAGES+="wget htop git vim zsh bash-completion ctags docker vlc clementine unrar yajl yaourt "
+  PACKAGES+="wget htop git vim gvim zsh bash-completion ctags docker vlc clementine unrar yajl yaourt "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin " 
-  # test it...
   PACKAGES+="chromium firefox opera "
 
   sudo pacman -Sy
@@ -35,6 +34,10 @@ install_arch () {
     yaourt -S --needed --noconfirm $PACKAGES
   fi
 
+  if [ ! -d "$HOME/env" ]; then
+    git clone https://github.com/sylviot/env.git ~/env
+  fi
+
   configure_desktop
   configure_vim
   configure_zsh
@@ -46,14 +49,15 @@ configure_desktop() {
 
   #Configure lightdm.conf
   sudo sed -i -r 's/^#.(greeter-session=)/\1lightdm-webkit2-greeter/g' /etc/lightdm/lightdm.conf
+  sudo systemctl enable lightdm
 
-  systemctl enable lightdm.service
   #download image backgroud
   #xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s /temp/background.jpg
 }
 
 configure_docker() {
   print "Configuring docker..."
+  #if [-n "`systemctl is-enabled docker | grep disabled`"]; then
   sudo systemctl enable docker
   sudo usermod -aG docker sylviot
 
@@ -72,6 +76,8 @@ configure_docker() {
 
     docker run --name web-cache -d redis
     docker run --name web-db -d postgres
+    
+    ln -s ~/env/bin/* /usr/local/bin/
     # Move to /bin in github
     #sudo bash -c "echo -e '#! /bin/bash \n docker run --name web --link web-cache --link web-db --ip 172.17.0.100 -v $PWD:/var/www/app ambientum/php:7.0-nginx' >> /usr/local/bin/docker-laravel"
     #sudo chmod +x "/usr/local/bin/docker-laravel"

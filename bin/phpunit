@@ -1,0 +1,3 @@
+#! /bin/bash
+
+docker run $1 -i -v $PWD:/app --rm phpunit/phpunit $2 $3 $4 $5 $6
