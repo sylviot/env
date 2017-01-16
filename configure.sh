@@ -14,9 +14,9 @@ install_arch () {
 
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
-  PACKAGES="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm"
+  PACKAGES="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
   PACKAGES+="wget htop git vim gvim zsh bash-completion ctags docker vlc clementine unrar yajl yaourt "
-  # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin " 
+  # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin "
   PACKAGES+="chromium firefox opera "
 
   sudo pacman -Sy
@@ -76,13 +76,10 @@ configure_docker() {
 
     docker run --name web-cache -d redis
     docker run --name web-db -d postgres
-    
-    ln -s ~/env/bin/* /usr/local/bin/
-    # Move to /bin in github
-    #sudo bash -c "echo -e '#! /bin/bash \n docker run --name web --link web-cache --link web-db --ip 172.17.0.100 -v $PWD:/var/www/app ambientum/php:7.0-nginx' >> /usr/local/bin/docker-laravel"
-    #sudo chmod +x "/usr/local/bin/docker-laravel"
-    #sudo chmod +x "/usr/local/bin/docker-phpunit"  
   fi
+
+  print "Configuring docker bin..."
+  ln -s ~/env/bin/* /usr/local/bin/
 }
 
 configure_vim() {
