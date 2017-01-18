@@ -9,16 +9,19 @@ swapon /dev/sda2
 
 mount /dev/sda3 /mnt
 
-mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bkp
-curl -s "https://www.archlinux.org/mirrorlist/?country=BR&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
+rm -f /etc/pacman.d/mirrorlist
+curl -s "https://www.archlinux.org/mirrorlist/?country=BR&country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
 sed -i 's/\#Server/Server/g' /etc/pacman.d/mirrorlist
 
 pacstrap /mnt base base-devel
 
 genfstab -U /mnt > /mnt/etc/fstab
 
-arch-chroot /mnt /bin/bash <<EOF
+cat <<EOF > /mnt/script.sh
+
+echo "Configuration hostname..."
 echo "sylviot" > /etc/hostname
+passwd sylviot
 
 useradd -m -G wheel,users -s /bin/bash sylviot
 sed -i -r 's/^#.(%wheel.[^PSWD]*$)/\1/' /etc/sudores
@@ -41,9 +44,12 @@ grub-install --recheck --target=i386-pc /dev/sda
 sed -i -r 's/(^.*_TIMEOUT=)5/\10/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
+echo "Configuration root passwd..."
 passwd
 
 EOF
+
+arch-chroot /mnt bash -c "sh /script.sh"
 
 umount -R /mnt
 

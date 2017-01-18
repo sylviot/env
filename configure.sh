@@ -48,7 +48,7 @@ configure_desktop() {
   print "Configuring desktop..."
 
   #Configure lightdm.conf
-  sudo sed -i -r 's/^#.(greeter-session=)/\1lightdm-webkit2-greeter/g' /etc/lightdm/lightdm.conf
+  sudo sed -i -r 's/^#.(greeter-session.=).*$/\1lightdm-webkit2-greeter/g' /etc/lightdm/lightdm.conf
   sudo systemctl enable lightdm
 
   #download image backgroud
