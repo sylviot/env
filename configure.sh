@@ -1,6 +1,13 @@
 #! /bin/bash
 
 preinstall_arch() {
+  if [ ! -s "/etc/pacman.d/mirrorlist" ]; then
+    print "> > Configuring mirror list..."
+    sudo -rm -f /etc/pacman.d/mirrorlist
+    curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
+    sed -i 's/\#.*(Server)/\1/g' /etc/pacman.d/mirrorlist
+  fi
+
   if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
     print "> > Configuring yaourt server..."
     sudo bash -c "echo -e '\n\n[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
@@ -79,7 +86,7 @@ configure_docker() {
   fi
 
   print "Configuring docker bin..."
-  ln -s ~/env/bin/* /usr/local/bin/
+  sudo ln -s ~/env/bin/* /usr/local/bin/
 }
 
 configure_vim() {

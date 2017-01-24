@@ -10,10 +10,6 @@ swapon /dev/sda2
 
 mount /dev/sda3 /mnt
 
-#rm -f /etc/pacman.d/mirrorlist
-#curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
-#sed -i 's/\#.*(Server)/\1/g' /etc/pacman.d/mirrorlist
-
 pacstrap /mnt base base-devel
 
 genfstab -U /mnt > /mnt/etc/fstab
