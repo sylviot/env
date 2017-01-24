@@ -99,8 +99,8 @@ configure_vim() {
 
   if [ ! -s "$HOME/.vimrc" ]; then
     print "Configuring .vimrc..."
-    git clone https://github.com/sylviot/dot.git /tmp/dot
-    mv /tmp/dot/.vimrc $HOME/.vimrc
+    git clone https://github.com/sylviot/dot.git $HOME/dot
+    sudo ln -s $HOME/dot/.vimrc $HOME/.vimrc
   fi
 
   print "Install/Update Vundle plugins..."
