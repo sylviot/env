@@ -54,6 +54,9 @@ install_arch () {
 configure_desktop() {
   print "Configuring desktop..."
 
+  #Configure xinitrc
+  cp /etc/X11/xinit/xinitrc ~/.xinitrc
+
   #Configure lightdm.conf
   sudo sed -i -r 's/^#.(greeter-session.=).*$/\1lightdm-webkit2-greeter/g' /etc/lightdm/lightdm.conf
   sudo systemctl enable lightdm
