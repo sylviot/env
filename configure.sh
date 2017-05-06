@@ -58,7 +58,7 @@ configure_desktop() {
   cp /etc/X11/xinit/xinitrc ~/.xinitrc
 
   #Configure lightdm.conf
-  sudo sed -i -r 's/^#.(greeter-session.=).*$/\1lightdm-webkit2-greeter/g' /etc/lightdm/lightdm.conf
+  sudo set -i -r '/[Seat:*]/a greeter-session=lightdm-webkit2-greeter' /etc/lightdm/lightdm.conf
   sudo systemctl enable lightdm
 
   #download image backgroud
