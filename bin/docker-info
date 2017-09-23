@@ -1,8 +1,13 @@
 #! /bin/bash
 
-echo "-------- DOCKER INFO - $1 ---------"
+echo -e "\n-------- DOCKER ($1) - \033[34;4;1m$(docker inspect -f '{{ .State.Status }}' $1)\033[0m ---------"
 
-echo -e "Hostname:\t $(docker inspect -f '{{ .Config.Hostname}}' $1)"
-echo -e "IPAddress:\t $(docker inspect -f '{{ .NetworkSettings.IPAddress}}' $1)"
+echo -e "Docker Image:\t\t $(docker inspect -f '{{ .Config.Image }}' $1)"
+echo -e "Docker Container:\t $(docker inspect -f '{{ .Config.Hostname }}' $1)"
 
-echo -e "\n"
+echo -e "Hostname:\t\t $(docker inspect -f '{{ .Config.Hostname}}' $1)"
+echo -e "Gateway:\t\t $(docker inspect -f '{{ .NetworkSettings.Gateway}}' $1)"
+echo -e "IP Address:\t\t $(docker inspect -f '{{ .NetworkSettings.IPAddress}}' $1)"
+echo -e "Ports:\t\t $(docker inspect -f '{{ .NetworkSettings.Ports}}' $1)"
+
+echo -e "----------------------------------------------\n"
