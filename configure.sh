@@ -26,9 +26,10 @@ install_arch () {
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
   PACKAGES ="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
-  PACKAGES+="wget htop git vim gvim zsh bash-completion ctags docker vlc clementine unrar yajl yaourt "
+  PACKAGES+="wget htop git vim gvim zsh bash-completion ctags docker unrar yaourt "
+  PACKAGES+="vlc clementine "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin "
-  PACKAGES+="chromium firefox opera "
+  #PACKAGES+="chromium firefox opera "
 
   sudo pacman -Sy
 
@@ -58,7 +59,8 @@ configure_desktop() {
   cp /etc/X11/xinit/xinitrc ~/.xinitrc
 
   #Configure lightdm.conf
-  sudo set -i -r '/[Seat:*]/a greeter-session=lightdm-webkit2-greeter' /etc/lightdm/lightdm.conf
+  sudo sed -i -r '/[Seat:*]/a greeter-session=lightdm-webkit2-greeter' /etc/lightdm/lightdm.conf
+  sudo sed -i -r 's/(^webkit-theme.*=).*(\w)$/\1 litarvan/gmi' /etc/lightdm/lightdm-webkit.conf
   sudo systemctl enable lightdm
 
   #download image backgroud
