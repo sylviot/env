@@ -12,6 +12,10 @@ preinstall_arch() {
     print "> > Configuring yaourt server..."
     sudo bash -c "echo -e '\n\n[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
   fi
+
+  if [ ! -d "$HOME/env" ]; then
+    git clone https://github.com/sylviot/env.git ~/env
+  fi
 }
 
 install_arch () {
@@ -21,7 +25,7 @@ install_arch () {
 
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
-  PACKAGES="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
+  PACKAGES ="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
   PACKAGES+="wget htop git vim gvim zsh bash-completion ctags docker vlc clementine unrar yajl yaourt "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin "
   PACKAGES+="chromium firefox opera "
@@ -39,10 +43,6 @@ install_arch () {
   if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling yaourt packages..."
     yaourt -S --needed --noconfirm $PACKAGES
-  fi
-
-  if [ ! -d "$HOME/env" ]; then
-    git clone https://github.com/sylviot/env.git ~/env
   fi
 
   configure_desktop
@@ -135,7 +135,4 @@ print () {
   echo -e "$DEFAULT > $1$NC"
 }
 
-
-echo getopts
-
-#install_arch
+install_arch
