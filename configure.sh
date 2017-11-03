@@ -3,9 +3,9 @@
 preinstall_arch() {
   if [ ! -s "/etc/pacman.d/mirrorlist" ]; then
     print "> > Configuring mirror list..."
-    sudo -rm -f /etc/pacman.d/mirrorlist
-    curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
-    sed -i 's/\#.*(Server)/\1/g' /etc/pacman.d/mirrorlist
+    #sudo rm -f /etc/pacman.d/mirrorlist
+    #curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
+    #sed -i 's/\#.*(Server)/\1/g' /etc/pacman.d/mirrorlist
   fi
 
   if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
