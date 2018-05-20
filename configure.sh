@@ -3,14 +3,18 @@
 preinstall_arch() {
   if [ ! -s "/etc/pacman.d/mirrorlist" ]; then
     print "> > Configuring mirror list..."
-    sudo -rm -f /etc/pacman.d/mirrorlist
-    curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
-    sed -i 's/\#.*(Server)/\1/g' /etc/pacman.d/mirrorlist
+    #sudo rm -f /etc/pacman.d/mirrorlist
+    #curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
+    #sed -i 's/\#.*(Server)/\1/g' /etc/pacman.d/mirrorlist
   fi
 
   if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
     print "> > Configuring yaourt server..."
     sudo bash -c "echo -e '\n\n[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
+  fi
+
+  if [ ! -d "$HOME/env" ]; then
+    git clone https://github.com/sylviot/env.git ~/env
   fi
 }
 
@@ -21,10 +25,11 @@ install_arch () {
 
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
-  PACKAGES="xorg-server xorg-server-utils xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
-  PACKAGES+="wget htop git vim gvim zsh bash-completion ctags docker vlc clementine unrar yajl yaourt "
+  PACKAGES ="xorg-server xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
+  PACKAGES+="wget htop git vim gvim zsh bash-completion ctags docker unrar yaourt "
+  PACKAGES+="vlc clementine "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin "
-  PACKAGES+="chromium firefox opera "
+  #PACKAGES+="chromium firefox opera "
 
   sudo pacman -Sy
 
@@ -33,16 +38,12 @@ install_arch () {
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
   
-  PACKAGES="google-chrome lightdm-webkit2-greeter archey3 "
+  PACKAGES="google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan archey3 "
 
   #yaourt installs
   if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling yaourt packages..."
     yaourt -S --needed --noconfirm $PACKAGES
-  fi
-
-  if [ ! -d "$HOME/env" ]; then
-    git clone https://github.com/sylviot/env.git ~/env
   fi
 
   configure_desktop
@@ -58,7 +59,8 @@ configure_desktop() {
   cp /etc/X11/xinit/xinitrc ~/.xinitrc
 
   #Configure lightdm.conf
-  sudo set -i -r '/[Seat:*]/a greeter-session=lightdm-webkit2-greeter' /etc/lightdm/lightdm.conf
+  sudo sed -i -r '/[Seat:*]/a greeter-session=lightdm-webkit2-greeter' /etc/lightdm/lightdm.conf
+  sudo sed -i -r 's/(^webkit-theme.*=).*(\w)$/\1 litarvan/gmi' /etc/lightdm/lightdm-webkit.conf
   sudo systemctl enable lightdm
 
   #download image backgroud
