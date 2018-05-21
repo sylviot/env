@@ -59,7 +59,7 @@ configure_desktop() {
   cp /etc/X11/xinit/xinitrc ~/.xinitrc
 
   #Configure lightdm.conf
-  sudo sed -i -r -e 's/\#(greeter-session=).*$/\1light-webkit2-greeter/' /etc/lightdm/lightdm.conf
+  sudo sed -i -r -e 's/\#(greeter-session=).*$/\1lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
   sudo sed -i -r -e 's/(^webkit-theme.*=).*$/\1 litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
   sudo systemctl enable lightdm
 
