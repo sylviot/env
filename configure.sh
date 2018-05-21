@@ -38,7 +38,7 @@ install_arch () {
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
   
-  PACKAGES="google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan archey3 "
+  PACKAGES="google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
 
   #yaourt installs
   if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
