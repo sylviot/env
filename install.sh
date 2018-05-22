@@ -3,6 +3,10 @@ set -e
 
 fdisk -l
 
+# /dev/sda1 - boot
+# /dev/sda2 - swap
+# /dev/sda3 - /
+
 mkfs.ext4 -c /dev/sda3
 
 mkswap --check /dev/sda2
