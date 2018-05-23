@@ -35,7 +35,7 @@ export LANG=en_US.UTF-8
 locale-gen
 
 rm -f /etc/localtime
-ln -s /usr/share/zoneinfo/America/Porto_Velho > /etc/localtime
+ln -s /usr/share/zoneinfo/America/Porto_Velho /etc/localtime
 hwclock --systohc --utc
 timedatectl set-ntp true
 
