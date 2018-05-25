@@ -55,6 +55,7 @@ configure_desktop() {
   print "Configuring desktop..."
 
   #Configure xinitrc
+  echo -e "#! /bin/bash\nexec startxfce4" > ~/.xinitrc
   #cp /etc/X11/xinit/xinitrc ~/.xinitrc
 
   #Configure lightdm.conf
