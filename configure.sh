@@ -55,7 +55,7 @@ configure_desktop() {
   print "Configuring desktop..."
 
   #Configure xinitrc
-  cp /etc/X11/xinit/xinitrc ~/.xinitrc
+  #cp /etc/X11/xinit/xinitrc ~/.xinitrc
 
   #Configure lightdm.conf
   sudo sed -i -r -e 's/\#(greeter-session=).*$/\1lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
