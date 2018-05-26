@@ -60,7 +60,7 @@ configure_desktop() {
 
   #Configure lightdm.conf
   sudo sed -i -r -e 's/\#(greeter-session=).*$/\1lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
-  sudo sed -i -r -e 's/(^webkit-theme.*=).*$/\1 litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
+  sudo sed -i -r -e 's/^(webkit_theme.*=).*$/\1 litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
   sudo systemctl enable lightdm
   
   # Download Rele Theme
