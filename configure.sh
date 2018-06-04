@@ -91,8 +91,6 @@ configure_docker() {
     docker pull elixir
     docker pull node
 
-    docker run --name web-cache -d redis
-    docker run --name web-db -d postgres
   fi
 
   print "Configuring docker bin..."
