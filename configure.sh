@@ -47,7 +47,7 @@ configure_desktop() {
   print "Configuring desktop..."
 
   #Configure xinitrc
-  echo -e "#! /bin/sh\nexec startxfce4" > ~/.xinitrc
+  #echo -e "#! /bin/sh\nexec startxfce4" > ~/.xinitrc
   #cp /etc/X11/xinit/xinitrc ~/.xinitrc
 
   #Configure lightdm.conf
@@ -56,9 +56,9 @@ configure_desktop() {
   sudo systemctl enable lightdm
   
   # Download Rele Theme
-  curl -o /tmp/rele.tar.bz2 https://dl.opendesktop.org/api/files/downloadfile/id/1462392025/s/947eec5cfb08c2bb291190370343f799/t/1527263464/u/60272/77260-rele-xfce4.tar.bz2
-  tar -xjvf /tmp/rele.tar.bz2
-  sudo cp -R /tmp/Rele /usr/share/themes/Rele
+  ~#curl -o /tmp/rele.tar.bz2 https://dl.opendesktop.org/api/files/downloadfile/id/1462392025/s/947eec5cfb08c2bb291190370343f799/t/1527263464/u/60272/77260-rele-xfce4.tar.bz2
+  #tar -xjvf /tmp/rele.tar.bz2
+  #sudo cp -R /tmp/Rele /usr/share/themes/Rele
 
   #download image backgroud
   #xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s /temp/background.jpg
