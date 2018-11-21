@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-install_yaourt() {
+preinstall_yaourt() {
   print "> > > Installing $BLUE YAOURT $DEFAULT < < < <"
   
   sudo pacman -S --needed base-devel yajl
@@ -22,13 +22,13 @@ install_arch () {
   #PACKAGES+="chromium firefox opera vlc clementine"
 
   sudo pacman -Sy
-  
-  install_yaourt()
 
   if [ -n "`(pacman -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling pacman packages..."
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
+  
+  preinstall_yaourt
   
   PACKAGES="google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
 
