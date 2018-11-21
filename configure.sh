@@ -1,28 +1,18 @@
 #! /bin/bash
 
-preinstall_arch() {
-  if [ ! -s "/etc/pacman.d/mirrorlist" ]; then
-    print "> > Configuring mirror list..."
-    #sudo rm -f /etc/pacman.d/mirrorlist
-    #curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=http&protocol=https&use_mirror_status=on" > /etc/pacman.d/mirrorlist
-    #sed -i 's/\#.*(Server)/\1/g' /etc/pacman.d/mirrorlist
-  fi
 
-  if [ -z "`grep archlinuxfr /etc/pacman.conf`" ]; then
-    print "> > Configuring yaourt server..."
-    sudo bash -c "echo -e '\n\n[archlinuxfr]\nSigLevel=Never\nServer=http://repo.archlinux.fr/\$arch' >> /etc/pacman.conf"
-  fi
+install_yaourt() {
 
-  if [ ! -d "$HOME/env" ]; then
-    git clone https://github.com/sylviot/env.git ~/env
-  fi
+	sudo pacman -S --needed base-devel yajl
+	git clone https://aur.archlinux.org/package-query.git /tmp/package-query
+	cd /tmp/package-query && makepkg -si
+
+	git clone https://aur.archlinux.org/yaourt.git /tmp/yaourt
+	cd /tmp/yaourt && makepkg -si
+
 }
 
 install_arch () {
-  print "> > > Preinstalling $BLUE ARCH LINUX $DEFAULT < < < <"
-
-  preinstall_arch
-
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
   PACKAGES="xorg-server xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm 
@@ -31,6 +21,8 @@ install_arch () {
   #PACKAGES+="chromium firefox opera vlc clementine"
 
   sudo pacman -Sy
+  
+  install_yaourt()
 
   if [ -n "`(pacman -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling pacman packages..."
