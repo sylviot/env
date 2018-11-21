@@ -70,21 +70,6 @@ configure_docker() {
   sudo systemctl enable docker
   sudo usermod -aG docker sylviot
 
-  # confirm pulling
-  read -p "Download docker images? [y/n] " -r
-  if [[ "$REPLY" == "y" ]]; then
-
-    print "Pulling docker images..."
-    docker pull php
-    docker pull ambientum/php:7.0-nginx
-    docker pull phpunit/phpunit
-    docker pull postgres
-    docker pull redis
-    docker pull elixir
-    docker pull node
-
-  fi
-
   print "Configuring docker bin..."
   sudo ln -s ~/env/bin/* /usr/local/bin/
 }
