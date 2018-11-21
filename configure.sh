@@ -15,8 +15,8 @@ install_yaourt() {
 install_arch () {
   print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
 
-  PACKAGES="xorg-server xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm 
-    wget htop git vim zsh bash-completion ctags docker unrar yaourt"
+  PACKAGES="xorg-server xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
+  PACKAGES+="wget htop git vim zsh bash-completion ctags docker unrar "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin "
   #PACKAGES+="chromium firefox opera vlc clementine"
 
