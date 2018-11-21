@@ -2,13 +2,14 @@
 
 
 install_yaourt() {
+  print "> > > Installing $BLUE YAOURT $DEFAULT < < < <"
+  
+  sudo pacman -S --needed base-devel yajl
+  git clone https://aur.archlinux.org/package-query.git /tmp/package-query
+  cd /tmp/package-query && makepkg -si
 
-	sudo pacman -S --needed base-devel yajl
-	git clone https://aur.archlinux.org/package-query.git /tmp/package-query
-	cd /tmp/package-query && makepkg -si
-
-	git clone https://aur.archlinux.org/yaourt.git /tmp/yaourt
-	cd /tmp/yaourt && makepkg -si
+  git clone https://aur.archlinux.org/yaourt.git /tmp/yaourt
+  cd /tmp/yaourt && makepkg -si
 
 }
 
