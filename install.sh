@@ -1,6 +1,27 @@
 #!/bin/bash
 set -e
 
+MEMORYSIZE=´cat /proc/meminfo | grep MemTotal | grep -Eo "[0-9]*"´
+
+fdisk /dev/sda << EOF
+n
+p
+1
+
++512M
+n
+p
+2
+
++$MEMORYSIZE
+n
+p
+3
+
+
+w
+EOF
+
 fdisk -l
 
 # /dev/sda1 - boot
