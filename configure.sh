@@ -47,6 +47,10 @@ install_arch () {
 configure_desktop() {
   print "Configuring desktop..."
 
+  #Configure zsh
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  chsh -s $(which zsh)
+  
   #Configure xinitrc
   #echo -e "#! /bin/sh\nexec startxfce4" > ~/.xinitrc
   #cp /etc/X11/xinit/xinitrc ~/.xinitrc
