@@ -43,10 +43,6 @@ install_utils() {
 
 configure_desktop() {
   print "Configuring desktop..."
-
-  #Configure zsh
-  #sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  #chsh -s $(which zsh)
   
   #Configure xinitrc
   #echo -e "#! /bin/sh\nexec startxfce4" > ~/.xinitrc
@@ -102,14 +98,15 @@ configure_vim() {
 }
 
 configure_zsh() {
+  if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    print "Configuring oh-my-zsh..."
+    git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
+    cp $HOME/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  fi
+  
   if [ ! -z "`echo $SHELL | grep zsh`" ]; then
     print "Configuring zsh..."
     sudo chsh -s $(which zsh)
-  fi
-
-  if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    print "Configuring oh-my-zsh..."
-    git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
   fi
 }
 
