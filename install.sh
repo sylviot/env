@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-MEMORYSIZE=´cat /proc/meminfo | grep MemTotal | grep -Eo "[0-9]*"´
+MEMORYSIZE=$(sudo cat /proc/meminfo | grep MemTotal | grep -Eo "[0-9]*")
 
 fdisk /dev/sda << EOF
 n
