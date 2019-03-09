@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-preinstall_yaourt() {
+install_yaourt() {
   print "> > > Installing $BLUE YAOURT $DEFAULT < < < <"
   
   #sudo pacman -S --needed --noconfirm base-devel yajl
@@ -28,7 +28,7 @@ install_arch () {
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
   
-  preinstall_yaourt
+  install_yaourt
   
   PACKAGES="google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
 
