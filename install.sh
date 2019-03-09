@@ -28,11 +28,10 @@ fdisk -l
 # /dev/sda2 - swap
 # /dev/sda3 - /
 
-mkfs.ext4 -c /dev/sda3
-
 mkswap --check /dev/sda2
 swapon /dev/sda2
 
+mkfs.ext4 -c /dev/sda3
 mount /dev/sda3 /mnt
 
 pacstrap /mnt base base-devel
