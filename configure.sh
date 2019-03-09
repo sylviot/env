@@ -13,9 +13,9 @@ install_yaourt() {
 
 }
 
-install_arch () {
-  print "> > > Installing $BLUE ARCH LINUX $DEFAULT < < < <"
-
+install_xfce4() {
+  print "> > > Installing $BLUE XFCE4 $DEFAULT < < < <"
+  
   PACKAGES="xorg-server xorg-xinit xorg-twm xorg-xclock xterm xfce4 lightdm "
   PACKAGES+="wget htop git vim zsh bash-completion ctags docker unrar "
   # PACKAGES+="qemu-kvm qemu virt-manager virt-viewer libvirt-bin "
@@ -27,21 +27,30 @@ install_arch () {
     print "\tInstalling pacman packages..."
     sudo pacman -Sq --needed --noconfirm $PACKAGES
   fi
-  
-  install_yaourt
+}
+
+install_utils() {
+  print "> > > Installing $BLUE UTILS $DEFAULT < < < <"
   
   PACKAGES="google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
 
-  #yaourt installs
   if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
     print "\tInstalling yaourt packages..."
     yaourt -S --needed --noconfirm $PACKAGES
   fi
+}
 
+install_arch() {
+
+  install_xfce4
+  install_yaourt
+  install_utils
+  
   configure_desktop
   configure_vim
   configure_zsh
   configure_docker
+  
 }
 
 configure_desktop() {
