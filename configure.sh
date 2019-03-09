@@ -41,19 +41,6 @@ install_utils() {
   fi
 }
 
-install_arch() {
-
-  install_xfce4
-  install_yaourt
-  install_utils
-  
-  configure_desktop
-  configure_vim
-  configure_zsh
-  configure_docker
-  
-}
-
 configure_desktop() {
   print "Configuring desktop..."
 
@@ -124,6 +111,19 @@ configure_zsh() {
     print "Configuring oh-my-zsh..."
     git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
   fi
+}
+
+install_arch() {
+
+  install_xfce4
+  install_yaourt
+  install_utils
+  
+  configure_desktop
+  configure_vim
+  configure_zsh
+  configure_docker
+  
 }
 
 print () {
