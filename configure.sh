@@ -44,10 +44,6 @@ install_utils() {
 configure_desktop() {
   print "Configuring desktop..."
   
-  #Configure xinitrc
-  #echo -e "#! /bin/sh\nexec startxfce4" > ~/.xinitrc
-  #cp /etc/X11/xinit/xinitrc ~/.xinitrc
-
   #Configure lightdm.conf
   sudo sed -i -r -e 's/\#(greeter-session=).*$/\1lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
   sudo sed -i -r -e 's/^(webkit_theme.*=).*$/\1 litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
