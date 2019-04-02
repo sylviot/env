@@ -96,7 +96,8 @@ configure_vim() {
 configure_zsh() {
   if [ ! -d "$HOME/.oh-my-zsh" ]; then
     print "Configuring oh-my-zsh..."
-    git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    # git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
     cp $HOME/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
   fi
   
