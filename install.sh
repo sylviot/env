@@ -49,7 +49,7 @@ useradd -m -G wheel,users -s /bin/bash sylviot
 sed -i -r 's/^#.(%wheel.[^PSWD]*$)/\1/' /etc/sudoers
 passwd sylviot
 
-locale >/etc/locale.conf
+locale > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 export LANG=en_US.UTF-8
 locale-gen
