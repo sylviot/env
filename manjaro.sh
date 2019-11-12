@@ -115,7 +115,7 @@ vim() {
 
 yaourt() {
   if [ -n "`(hash yaourt 2>/dev/null) | grep not\ found`" ]; then
-    print "> > > Installing $BLUE YAOURT $DEFAULT < < < <"
+    print "> > > Installing YAOURT < < < <"
 
     git clone https://aur.archlinux.org/package-query.git /tmp/package-query
     cd /tmp/package-query && makepkg -si
