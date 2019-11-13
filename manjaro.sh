@@ -7,20 +7,16 @@ print () {
 }
 
 with_pacman() {
-  print "> > > INSTALL WITH pacman ($@) < < <"
-
-  if [ -n "`(pacman -Qk $@ 2>&1) | grep was\ not\ found`" ]; then
+  if [ -n "`(sudo pacman -Qk $@ 2>&1) | grep was\ not\ found`" ]; then
+    print "> > > INSTALL WITH pacman ($@) < < <"
     sudo pacman -Sq --needed --noconfirm $@
   fi
 }
 
 with_yaourt() {
-  print "> > > INSTALL WITH Yaourt < < <"
-  print "> > > ($1) < < <"
-
-  if [ -n "`(yaourt -Qk $1 2>&1) | grep was\ not\ found`" ]; then
+  if [ -n "`(yaourt -Qk $@ 2>/dev/null) | grep not\ found`" ]; then
     print "\tInstalling yaourt packages..."
-    yaourt -S --needed --noconfirm $1
+    yaourt -S --needed --noconfirm $@
   fi
 }
 
@@ -28,23 +24,8 @@ with_yaourt() {
 update() {
   print "> > > UPDATE Manjaro sylviot < < <"
 
+  sudo pacman-mirrors -g --geoip
   sudo pacman -Suy --noconfirm
-  install_yaourt
-
-  PACKAGES="wget htop git vim zsh bash-completion unrar "
-  PACKAGES+="docker code"
-
-  if [ -n "`(pacman -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
-    print "\tInstalling pacman packages ($PACKAGES)..."
-    sudo pacman -Sq --needed --noconfirm $PACKAGES
-  fi
-
-  PACKAGES="google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
-
-  if [ -n "`(yaourt -Qk $PACKAGES 2>&1) | grep was\ not\ found`" ]; then
-    print "\tInstalling yaourt packages..."
-    yaourt -S --needed --noconfirm $PACKAGES
-  fi
 
   print "> > > FINISH UPDATE < < <"
 }
@@ -59,8 +40,9 @@ install() {
 
 
 # Functions #
-run() {
-  $1 $2
+base() {
+  with_pacman "xf86-input-mouse xf86-input-keyboard xf86-video-ati"
+  with_pacman "bash-completion htop unrar zsh wget"
 }
 
 desktop() {
@@ -73,10 +55,10 @@ desktop() {
 }
 
 development() {
-  with_pacman "wget htop git vim zsh bash-completion docker unrar"
+  with_pacman 'git vim docker chromium'
+  with_yaourt "google-chrome"
 
-  print "> Configuring docker..."
-  if [ -n "`(systemctl is-enabled docker) | grep disabled`"]; then
+  if [ -n "`(systemctl is-enabled docker) | grep disabled`" ]; then
     print "> Docker systemctl enable"
     sudo systemctl enable docker
     sudo usermod -aG docker sylviot
@@ -124,5 +106,5 @@ yaourt() {
   fi
 }
 
-$1 $2
+$1
 
