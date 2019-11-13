@@ -14,7 +14,7 @@ with_pacman() {
 }
 
 with_yaourt() {
-  if [ -n "`(yaourt -Qk $@ 2>/dev/null) | grep not\ found`" ]; then
+  if [ -n "`(yaourt -Qk $@ 2>/dev/null) | grep was\ not\ found`" ]; then
     print "\tInstalling yaourt packages..."
     yaourt -S --needed --noconfirm $@
   fi
@@ -26,6 +26,7 @@ update() {
 
   sudo pacman-mirrors -g --geoip
   sudo pacman -Suy --noconfirm
+  yaourt -Suyy --aur --noconfirm
 
   print "> > > FINISH UPDATE < < <"
 }
@@ -64,9 +65,7 @@ development() {
     sudo usermod -aG docker sylviot
   fi
 
-  print "Configuring docker bin..."
-  
-  sudo ln -s ~/env/bin/* /usr/local/bin/
+  sudo ln -s ~/env/bin/* /usr/local/bin/ 2>/dev/null
 }
 
 vim() {
