@@ -3,7 +3,7 @@
 print () {
   DEFAULT='\033[0;31m'
   NC='\033[0m'
-  echo -e "$DEFAULT > $1$NC"
+  echo -e "$DEFAULT $1 $NC"
 }
 
 with_pacman() {
@@ -42,11 +42,15 @@ install() {
 
 # Functions #
 base() {
+  print "> Configuration base..."
+
   with_pacman "xf86-input-mouse xf86-input-keyboard xf86-video-ati"
   with_pacman "bash-completion htop unrar zsh wget"
 }
 
 desktop() {
+  print "> Configuration desktop..."
+
   with_yaourt "lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
 
   print "> Configure lightdm"
@@ -56,6 +60,8 @@ desktop() {
 }
 
 development() {
+  print "> Configuration development..."
+
   with_pacman 'git vim docker chromium'
   with_yaourt "google-chrome"
 
@@ -66,10 +72,14 @@ development() {
   fi
 
   sudo ln -s ~/env/bin/* /usr/local/bin/ 2>/dev/null
+
+  print "Install dotnet..."
+  wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
+  sudo sh /tmp/dotnet-install.sh --install-dir /opt/dotnet -channel Current -version latest
 }
 
 vim() {
-  print "Configuring vim..."
+  print "> Configuring vim..."
 
   if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     print "Configuring Vundle..."
