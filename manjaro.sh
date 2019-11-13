@@ -50,12 +50,6 @@ update() {
 }
 
 install() {
-  $1 $2
-}
-
-
-# Functions #
-all() {
   yaourt
 
   desktop
@@ -63,12 +57,17 @@ all() {
   vim
 }
 
+
+# Functions #
+run() {
+  $1 $2
+}
+
 desktop() {
-  with_pacman ""
-  with_yaourt "google-chrome lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
+  with_yaourt "lightdm-webkit2-greeter lightdm-webkit-theme-litarvan"
 
   print "> Configure lightdm"
-  sudo sed -i -r -e 's/\#(greeter-session=).*$/\1lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
+  sudo sed -i -r -e 's/(greeter-session=).*$/\1lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
   sudo sed -i -r -e 's/^(webkit_theme.*=).*$/\1 litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
   sudo systemctl enable lightdm
 }
