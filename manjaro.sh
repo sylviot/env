@@ -45,7 +45,7 @@ base() {
   print "> Configuration base..."
 
   with_pacman "xf86-input-mouse xf86-input-keyboard xf86-video-ati"
-  with_pacman "bash-completion htop unrar wget"
+  with_pacman "bash-completion cmake htop unrar wget"
 }
 
 desktop() {
