@@ -83,6 +83,7 @@ development() {
   if [ -z "`(git config --list)` | grep user" ]; then
     git config --global user.name "sylviot"
     git config --global user.email "sylvio.tavares@hotmail.com"
+    ssh-keygen -t rsa -b 4096 -C "sylvio.tavares@hotmail.com"
   fi
 
   if [ ! -d "$HOME/.oh-my-zsh" ]; then
