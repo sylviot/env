@@ -62,7 +62,7 @@ desktop() {
 development() {
   print "> Configuration development..."
 
-  with_pacman 'chromium ctags docker git vim zsh'
+  with_pacman 'chromium ctags docker git nodejs npm vim zsh'
   with_yaourt "google-chrome"
 
   if [ -n "`(systemctl is-enabled docker) | grep disabled`" ]; then
