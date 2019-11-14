@@ -76,7 +76,9 @@ development() {
   if [ -n "`(hash dotnet 2>/dev/null) | grep not\ found`" ]; then
     print "Install dotnet..."
     wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
-    sudo sh /tmp/dotnet-install.sh --install-dir /opt/dotnet -channel Current -version latest
+    sudo sh /tmp/dotnet-install.sh --install-dir /opt/dotnet -Channel Current -Version latest
+    sudo sh ~/dotnet-install.sh --install-dir /opt/dotnet -Channel 2.2 -Version latest
+    sudo sh /tmp/dotnet-install.sh --install-dir /opt/dotnet -Channel LTS -Version latest
     sudo ln -s /opt/dotnet /usr/local/bin 2>/dev/null
   fi
 
